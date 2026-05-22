@@ -5,7 +5,7 @@ import { PricingSection } from '../components/landing/PricingSection';
 import { TestimonialSection } from '../components/landing/TestimonialSection';
 import { FAQSection } from '../components/landing/FAQSection';
 import { Footer } from '../components/landing/Footer';
-import useThemeStore from '../store/useThemeStore';
+import { useThemeStore } from '../store/useThemeStore';
 
 export function Landing() {
   const { theme } = useThemeStore();

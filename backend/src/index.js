@@ -3,11 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
+const initNotifications = require('./sockets/notifications');
 
 const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 const server = http.createServer(app);
+
+
 
 // Setup Socket.io
 const io = new Server(server, {
@@ -16,6 +19,7 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
 });
+initNotifications(io);
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',

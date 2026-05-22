@@ -7,6 +7,8 @@ import { Login } from './pages/Login';
 import { Landing } from './pages/Landing';
 import { Projects } from './pages/Projects';
 import { Messages } from './pages/Messages';
+import { Team } from './pages/Team';
+import { Settings } from './pages/Settings';
 
 const queryClient = new QueryClient();
 
@@ -28,10 +30,10 @@ function App() {
           
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
-            <Route path="team" element={<Placeholder title="Team Page Coming Soon" />} />
+            <Route path="team" element={<Team />} />
             <Route path="projects" element={<Projects />} />
             <Route path="messages" element={<Messages />} />
-            <Route path="settings" element={<Placeholder title="Settings Coming Soon" />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           
           <Route path="*" element={<Navigate to="/" replace />} />

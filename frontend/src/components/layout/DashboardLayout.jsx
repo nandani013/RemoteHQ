@@ -3,7 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import useAuthStore from '../../store/useAuthStore';
-import useThemeStore from '../../store/useThemeStore';
+import { useThemeStore } from '../../store/useThemeStore';
 
 export function DashboardLayout() {
   const { isAuthenticated } = useAuthStore();
