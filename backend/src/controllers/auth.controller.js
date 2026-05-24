@@ -10,7 +10,7 @@ const generateToken = (userId) => {
 
 const register = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name, password, role = 'Client' } = req.body;
 
     if (!email || !name || !password) {
       return res.status(400).json({ message: 'All fields are required' });
@@ -25,15 +25,15 @@ const register = async (req, res) => {
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const { rows: createdRows } = await db.query(
-        'INSERT INTO "User" (email, name, password) VALUES ($1, $2, $3) RETURNING id, email, name',
-        [email, name, hashedPassword]
+        'INSERT INTO "User" (email, name, password, role) VALUES ($1, $2, $3, $4) RETURNING id, email, name, role',
+        [email, name, hashedPassword, role]
       );
       const user = createdRows[0];
 
       const token = generateToken(user.id);
 
       res.status(201).json({
-        user: { id: user.id, email: user.email, name: user.name },
+        user: { id: user.id, email: user.email, name: user.name, role: user.role },
         token,
       });
     } catch (dbError) {
@@ -56,7 +56,7 @@ const login = async (req, res) => {
 
     let user;
     try {
-      const { rows } = await db.query('SELECT id, email, name, password FROM "User" WHERE email = $1', [email]);
+      const { rows } = await db.query('SELECT id, email, name, password, role FROM "User" WHERE email = $1', [email]);
       if (rows.length === 0) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
@@ -75,7 +75,7 @@ const login = async (req, res) => {
     const token = generateToken(user.id);
 
     res.json({
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
       token,
     });
   } catch (error) {
@@ -88,7 +88,7 @@ const getMe = async (req, res) => {
   try {
     let user;
     try {
-      const { rows } = await db.query('SELECT id, email, name, "createdAt" FROM "User" WHERE id = $1', [req.user.id]);
+      const { rows } = await db.query('SELECT id, email, name, role, "createdAt" FROM "User" WHERE id = $1', [req.user.id]);
       user = rows[0];
     } catch (dbError) {
       return res.status(503).json({ message: 'Database connection failed.' });

@@ -5,15 +5,7 @@ import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import useSidebarStore from '../../store/useSidebarStore';
 
-const navItems = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Team', href: '/dashboard/team', icon: Users },
-  { name: 'Projects', href: '/dashboard/projects', icon: Briefcase },
-  { name: 'Messages', href: '/dashboard/messages', icon: MessageSquare },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-];
-
-export function Sidebar() {
+export function Sidebar({ navItems = [], basePath = '/dashboard' }) {
   const { isCollapsed, toggleSidebar } = useSidebarStore();
 
   return (
@@ -60,7 +52,7 @@ export function Sidebar() {
           <NavLink
             key={item.name}
             to={item.href}
-            end={item.href === '/dashboard'}
+            end={item.href === basePath}
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3.5 px-3.5 mx-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all relative group',

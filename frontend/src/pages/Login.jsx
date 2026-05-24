@@ -20,11 +20,36 @@ export function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setAuth({ id: '1', name: isRegister ? name : 'Demo User', email }, 'fake-jwt-token');
+    
+    try {
+      const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
+      const body = isRegister ? { name, email, password } : { email, password };
+      
+      const response = await fetch(`http://localhost:5001${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Authentication failed');
+      }
+      
+      setAuth(data.user, data.token);
+      
+      if (data.user.role === 'Client') {
+        navigate('/crm');
+      } else {
+        navigate('/erp');
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+      alert(error.message);
+    } finally {
       setIsLoading(false);
-      navigate('/dashboard');
-    }, 1000);
+    }
   };
 
   return (
