@@ -14,7 +14,7 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setAuth } = useAuthStore();
+  const setAuth = useAuthStore(state => state.setAuth);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

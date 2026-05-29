@@ -163,3 +163,15 @@ model Notification {
   createdAt   DateTime @default(now())
   read        Boolean  @default(false)
 }
+// ==========================================
+// Authentication Models
+// ==========================================
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // bcrypt hash
+  name      String?
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
