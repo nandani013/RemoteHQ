@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  PROPOSAL_SENT
+  NEGOTIATION
+  WON
+  LOST
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum FinanceType {
+  REVENUE
+  EXPENSE
+}
+
+model Lead {
+  id         String     @id @default(uuid())
+  name       String
+  company    String
+  email      String
+  phone      String?
+  status     LeadStatus @default(NEW)
+  dealValue  Float      @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  Customer   Customer?
+  deals      Deal[]
+}
+
+model Customer {
+  id         String   @id @default(uuid())
+  leadId     String   @unique
+  lead       Lead     @relation(fields: [leadId], references: [id])
+  name       String
+  company    String
+  email      String
+  phone      String?
+  createdAt  DateTime @default(now())
+
+  deals      Deal[]
+}
+
+model Deal {
+  id         String     @id @default(uuid())
+  leadId     String
+  lead       Lead       @relation(fields: [leadId], references: [id])
+  customerId String?
+  customer   Customer?  @relation(fields: [customerId], references: [id])
+  projectId  String?
+  project    Project?   @relation(fields: [projectId], references: [id])
+  amount     Float      @default(0)
+  status     LeadStatus @default(NEW)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Ticket {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  status      TicketStatus @default(OPEN)
+  assignedTo  String?
+  createdAt   DateTime     @default(now())
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  description String
+  type        String   @default("GENERAL")
+  createdAt   DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  description String
+  type        String   @default("GENERAL")
+  createdAt   DateTime @default(now())
+}
+
+// ==========================================
+// ERP Models
+// ==========================================
+
+model Employee {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  department  String
+  designation String
+  role        String   @default("Employee")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projects    Project[]
+  attendances Attendance[]
+  notifications Notification[]
+}
+
+model Project {
+  id          String    @id @default(uuid())
+  name        String
+  managerId   String?
+  manager     Employee? @relation(fields: [managerId], references: [id])
+  status      String    @default("PLANNING") // PLANNING, IN_PROGRESS, COMPLETED
+  budget      Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  deals       Deal[]
+  activities  ProjectActivity[]
+}
+
+model ProjectActivity {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  description String
+  type        String
+  createdAt   DateTime @default(now())
+}
+
+model Attendance {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  clockIn     DateTime
+  clockOut    DateTime?
+  date        String    // YYYY-MM-DD
+  totalHours  Float?
+}
+
+model FinanceRecord {
+  id          String      @id @default(uuid())
+  type        FinanceType
+  amount      Float
+  category    String
+  description String
+  date        DateTime    @default(now())
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  type        String
+  userId      String?
+  user        Employee? @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  read        Boolean  @default(false)
+}

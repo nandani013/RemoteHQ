@@ -3,10 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { useThemeStore } from '../../store/useThemeStore';
-import { LayoutDashboard, Users, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, Settings, Briefcase, Clock, DollarSign } from 'lucide-react';
 
 const erpNavItems = [
   { name: 'ERP Dashboard', href: '/erp', icon: LayoutDashboard },
+  { name: 'Employees', href: '/erp/employees', icon: Users },
+  { name: 'Projects', href: '/erp/projects', icon: Briefcase },
+  { name: 'Attendance', href: '/erp/attendance', icon: Clock },
+  { name: 'Finance', href: '/erp/finance', icon: DollarSign },
   { name: 'Team', href: '/erp/team', icon: Users },
   { name: 'Settings', href: '/erp/settings', icon: Settings },
 ];

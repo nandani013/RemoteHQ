@@ -3,10 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { useThemeStore } from '../../store/useThemeStore';
-import { LayoutDashboard, Briefcase, MessageSquare, Settings } from 'lucide-react';
+import { LayoutDashboard, Briefcase, MessageSquare, Settings, Users, UserCheck, KanbanSquare, Ticket } from 'lucide-react';
 
 const crmNavItems = [
   { name: 'CRM Dashboard', href: '/crm', icon: LayoutDashboard },
+  { name: 'Leads', href: '/crm/leads', icon: Users },
+  { name: 'Customers', href: '/crm/customers', icon: UserCheck },
+  { name: 'Deals Pipeline', href: '/crm/deals', icon: KanbanSquare },
+  { name: 'Support Tickets', href: '/crm/tickets', icon: Ticket },
   { name: 'Projects', href: '/crm/projects', icon: Briefcase },
   { name: 'Messages', href: '/crm/messages', icon: MessageSquare },
   { name: 'Settings', href: '/crm/settings', icon: Settings },

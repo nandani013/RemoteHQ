@@ -5,7 +5,6 @@ const http = require('http');
 const { Server } = require('socket.io');
 const initNotifications = require('./sockets/notifications');
 
-const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -19,6 +18,7 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
 });
+app.set('io', io);
 initNotifications(io);
 
 app.use(cors({
@@ -26,8 +26,13 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Routes
+const authRoutes = require('./routes/auth.routes');
+const crmRoutes = require('./routes/crm.routes');
+const erpRoutes = require('./routes/erp.routes');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/crm', crmRoutes);
+app.use('/api/erp', erpRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
