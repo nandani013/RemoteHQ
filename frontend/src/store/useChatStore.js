@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import io from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5003';
 
 let socket = null;
 
