@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../lib/db');
+const { randomUUID } = require('crypto');
 
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET || 'remotehq_super_secret_key', {
+const generateToken = (user) => {
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'remotehq_super_secret_key', {
     expiresIn: '7d',
   });
 };
@@ -24,13 +25,14 @@ const register = async (req, res) => {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
+      const id = randomUUID();
       const { rows: createdRows } = await db.query(
-        'INSERT INTO "User" (email, name, password, role) VALUES ($1, $2, $3, $4) RETURNING id, email, name, role',
-        [email, name, hashedPassword, role]
+        'INSERT INTO "User" (id, email, name, password, role, "updatedAt") VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING id, email, name, role',
+        [id, email, name, hashedPassword, role]
       );
       const user = createdRows[0];
 
-      const token = generateToken(user.id);
+      const token = generateToken(user);
 
       res.status(201).json({
         user: { id: user.id, email: user.email, name: user.name, role: user.role },
@@ -72,7 +74,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = generateToken(user.id);
+    const token = generateToken(user);
 
     res.json({
       user: { id: user.id, email: user.email, name: user.name, role: user.role },

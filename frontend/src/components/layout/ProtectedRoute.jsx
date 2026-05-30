@@ -11,13 +11,16 @@ export const ProtectedRoute = ({ allowedRoles, defaultRedirect = '/login' }) => 
 
   // If allowedRoles is provided, check if user has required role
   if (allowedRoles && (!user || !allowedRoles.includes(user.role))) {
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
     // Redirect to their default module if they don't have access to this one
     if (user?.role === 'Client') {
       return <Navigate to="/crm" replace />;
     } else if (user?.role === 'Employee' || user?.role === 'Manager' || user?.role === 'Admin') {
       return <Navigate to="/erp" replace />;
     }
-    return <Navigate to={defaultRedirect} replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

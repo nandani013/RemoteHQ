@@ -1,4 +1,16 @@
 require('dotenv').config();
+
+// Global error handling
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+// Port is managed via .env (no hardcoded override)
 const express = require('express');
 const cors = require('cors');
 const http = require('http');

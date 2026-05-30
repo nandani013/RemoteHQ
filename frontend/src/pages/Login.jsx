@@ -25,7 +25,7 @@ export function Login() {
       const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
       const body = isRegister ? { name, email, password } : { email, password };
       
-      const response = await fetch(`http://localhost:5001${endpoint}`, {
+      const response = await fetch(`http://localhost:5003${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
