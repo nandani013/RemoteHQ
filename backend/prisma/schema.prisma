@@ -22,10 +22,6 @@ enum TicketStatus {
   CLOSED
 }
 
-enum FinanceType {
-  REVENUE
-  EXPENSE
-}
 
 model Lead {
   id         String     @id @default(uuid())
@@ -40,6 +36,13 @@ model Lead {
 
   Customer   Customer?
   deals      Deal[]
+  tasks      CrmTask[]
+  
+  transcripts     CallTranscript[]
+  insights        ConversationInsight[]
+  salesTasks      SalesTask[]
+  recommendations FollowUpRecommendation[]
+  emails          GeneratedEmail[]
 }
 
 model Customer {
@@ -61,8 +64,7 @@ model Deal {
   lead       Lead       @relation(fields: [leadId], references: [id])
   customerId String?
   customer   Customer?  @relation(fields: [customerId], references: [id])
-  projectId  String?
-  project    Project?   @relation(fields: [projectId], references: [id])
+
   amount     Float      @default(0)
   status     LeadStatus @default(NEW)
   createdAt  DateTime   @default(now())
@@ -93,77 +95,6 @@ model ActivityLog {
 }
 
 // ==========================================
-// ERP Models
-// ==========================================
-
-model Employee {
-  id          String   @id @default(uuid())
-  name        String
-  email       String   @unique
-  department  String
-  designation String
-  role        String   @default("Employee")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  projects    Project[]
-  attendances Attendance[]
-  notifications Notification[]
-}
-
-model Project {
-  id          String    @id @default(uuid())
-  name        String
-  managerId   String?
-  manager     Employee? @relation(fields: [managerId], references: [id])
-  status      String    @default("PLANNING") // PLANNING, IN_PROGRESS, COMPLETED
-  budget      Float     @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  deals       Deal[]
-  activities  ProjectActivity[]
-}
-
-model ProjectActivity {
-  id          String   @id @default(uuid())
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id])
-  description String
-  type        String
-  createdAt   DateTime @default(now())
-}
-
-model Attendance {
-  id          String    @id @default(uuid())
-  employeeId  String
-  employee    Employee  @relation(fields: [employeeId], references: [id])
-  clockIn     DateTime
-  clockOut    DateTime?
-  date        String    // YYYY-MM-DD
-  totalHours  Float?
-}
-
-model FinanceRecord {
-  id          String      @id @default(uuid())
-  type        FinanceType
-  amount      Float
-  category    String
-  description String
-  date        DateTime    @default(now())
-}
-
-model Notification {
-  id          String   @id @default(uuid())
-  title       String
-  message     String
-  type        String
-  userId      String?
-  user        Employee? @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  read        Boolean  @default(false)
-}
-// ==========================================
 // Authentication Models
 // ==========================================
 model User {
@@ -174,4 +105,62 @@ model User {
   role      String   @default("USER")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CrmTask {
+  id          String   @id @default(uuid())
+  title       String
+  owner       String   @default("Unassigned")
+  dueDate     String?
+  status      String   @default("OPEN")
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id])
+  createdAt   DateTime @default(now())
+}
+model CallTranscript {
+  id        String   @id @default(uuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  transcript String
+  createdAt DateTime @default(now())
+  
+  insights ConversationInsight[]
+}
+
+model ConversationInsight {
+  id               String   @id @default(uuid())
+  leadId           String?
+  lead             Lead?    @relation(fields: [leadId], references: [id])
+  callTranscriptId String?
+  callTranscript   CallTranscript? @relation(fields: [callTranscriptId], references: [id])
+  insights         String   // JSON string of insights
+  createdAt        DateTime @default(now())
+}
+
+model SalesTask {
+  id        String   @id @default(uuid())
+  title     String
+  owner     String   @default("Unassigned")
+  dueDate   String?
+  status    String   @default("OPEN")
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model FollowUpRecommendation {
+  id             String   @id @default(uuid())
+  leadId         String
+  lead           Lead     @relation(fields: [leadId], references: [id])
+  recommendation String
+  createdAt      DateTime @default(now())
+}
+
+model GeneratedEmail {
+  id        String   @id @default(uuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  subject   String
+  body      String
+  createdAt DateTime @default(now())
 }

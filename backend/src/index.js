@@ -15,7 +15,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-const initNotifications = require('./sockets/notifications');
+
 
 
 const app = express();
@@ -31,7 +31,7 @@ const io = new Server(server, {
   },
 });
 app.set('io', io);
-initNotifications(io);
+
 
 app.use(cors({
   origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : ['http://localhost:5173', 'http://localhost:5175'],
@@ -40,11 +40,13 @@ app.use(express.json());
 
 const authRoutes = require('./routes/auth.routes');
 const crmRoutes = require('./routes/crm.routes');
-const erpRoutes = require('./routes/erp.routes');
+const salesAutomationRoutes = require('./routes/salesAutomation.routes');
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/crm', crmRoutes);
-app.use('/api/erp', erpRoutes);
+app.use('/api/sales-automation', salesAutomationRoutes);
+
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });

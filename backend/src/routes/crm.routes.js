@@ -17,7 +17,6 @@ const {
 
 router.use(requireAuth, requireRole(['Admin', 'Manager', 'Client']));
 
-// Leads
 router.get('/leads', getLeads);
 router.get('/leads/:id', getLeadById);
 router.post('/leads', createLead);

@@ -39,11 +39,7 @@ export function Login() {
       
       setAuth(data.user, data.token);
       
-      if (data.user.role === 'Client') {
-        navigate('/crm');
-      } else {
-        navigate('/erp');
-      }
+      navigate('/crm');
     } catch (error) {
       console.error('Auth error:', error);
       alert(error.message);
