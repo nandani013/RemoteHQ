@@ -35,61 +35,7 @@ export const crmApi = {
     if (!res.ok) throw new Error('Failed to delete lead');
     return res.json();
   },
-  // Sales Automation APIs
-  preCallSummary: async (leadId) => {
-    const res = await fetch(`${API_BASE}/sales-automation/pre-call-summary`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ leadId })
-    });
-    if (!res.ok) throw new Error('Failed to get pre-call summary');
-    return res.json();
-  },
-  analyzeTranscript: async (transcript) => {
-    const res = await fetch(`${API_BASE}/sales-automation/analyze-transcript`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ transcript })
-    });
-    if (!res.ok) throw new Error('Failed to analyze transcript');
-    return res.json();
-  },
-  createTasks: async (leadId, transcript) => {
-    const res = await fetch(`${API_BASE}/sales-automation/create-tasks`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ leadId, transcript })
-    });
-    if (!res.ok) throw new Error('Failed to create tasks');
-    return res.json();
-  },
-  getRecommendations: async (leadId) => {
-    const res = await fetch(`${API_BASE}/sales-automation/recommendations`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ leadId })
-    });
-    if (!res.ok) throw new Error('Failed to get recommendations');
-    return res.json();
-  },
-  generateEmail: async (leadId, transcript, recipientName) => {
-    const res = await fetch(`${API_BASE}/sales-automation/generate-email`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ leadId, transcript, recipientName })
-    });
-    if (!res.ok) throw new Error('Failed to generate email');
-    return res.json();
-  },
-  createTasksFromTranscript: async (leadId, transcript) => {
-    const res = await fetch(`${API_BASE}/crm/leads/${leadId}/create-tasks`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ transcript })
-    });
-    if (!res.ok) throw new Error('Failed to create tasks from transcript');
-    return res.json();
-  },
+  // Sales Automation APIs removed from here
 
   // Customers
   getCustomers: async () => {
@@ -135,4 +81,55 @@ export const crmApi = {
     if (!res.ok) throw new Error('Failed to fetch activities');
     return res.json();
   },
+};
+
+// Sales Automation APIs
+export const preCallSummary = async (leadId) => {
+  const res = await fetch(`${API_BASE}/sales-automation/pre-call-summary`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ leadId })
+  });
+  if (!res.ok) throw new Error('Failed to get pre-call summary');
+  return res.json();
+};
+
+export const analyzeTranscript = async (transcript) => {
+  const res = await fetch(`${API_BASE}/sales-automation/analyze-transcript`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ transcript })
+  });
+  if (!res.ok) throw new Error('Failed to analyze transcript');
+  return res.json();
+};
+
+export const createTasks = async (leadId, transcript) => {
+  const res = await fetch(`${API_BASE}/sales-automation/create-tasks`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ leadId, transcript })
+  });
+  if (!res.ok) throw new Error('Failed to create tasks');
+  return res.json();
+};
+
+export const getRecommendations = async (leadId) => {
+  const res = await fetch(`${API_BASE}/sales-automation/recommendations`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ leadId })
+  });
+  if (!res.ok) throw new Error('Failed to get recommendations');
+  return res.json();
+};
+
+export const generateEmail = async (leadId, transcript, recipientName) => {
+  const res = await fetch(`${API_BASE}/sales-automation/generate-email`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ leadId, transcript, recipientName })
+  });
+  if (!res.ok) throw new Error('Failed to generate email');
+  return res.json();
 };
