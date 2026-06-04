@@ -14,12 +14,12 @@ const crmNavItems = [
   { name: 'Messages', href: '/crm/messages', icon: MessageSquare },
   { name: 'Settings', href: '/crm/settings', icon: Settings },
   { name: 'Sales Automation', href: '/crm/sales-automation', icon: Briefcase },
-  { name: 'Pre‑Call Summary', href: '/crm/pre-call-summary', icon: LayoutDashboard },
-  { name: 'Conversation Insights', href: '/crm/conversation-insights', icon: MessageSquare },
-  { name: 'Task Automation', href: '/crm/task-automation', icon: Ticket },
-  { name: 'Recommendations', href: '/crm/recommendations', icon: Users },
-  { name: 'Email Generator', href: '/crm/email-generator', icon: Users }
-];;
+  { name: 'Pre‑Call Summary', href: '/crm/sales-automation/pre-call-summary', icon: LayoutDashboard },
+  { name: 'Conversation Insights', href: '/crm/sales-automation/conversation-insights', icon: MessageSquare },
+  { name: 'Task Automation', href: '/crm/sales-automation/task-automation', icon: Ticket },
+  { name: 'Recommendations', href: '/crm/sales-automation/recommendations', icon: Users },
+  { name: 'Email Generator', href: '/crm/sales-automation/email-generator', icon: Users }
+];
 
 export function CrmLayout() {
   const { theme } = useThemeStore();
