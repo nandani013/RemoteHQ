@@ -33,6 +33,15 @@ export default function Recommendations() {
     }
   };
 
+  const handleExecuteAction = () => {
+    showToast("Action executed successfully! Updating CRM...", "success");
+    // Mock updating the CRM status
+    setTimeout(() => {
+      setRecommendations(null);
+      setLeadId("");
+    }, 1500);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
       {/* Toast Notification */}
@@ -146,7 +155,10 @@ export default function Recommendations() {
                   {recommendations.reasoning || recommendations.context || "Follow this action to improve conversion rate and move the deal to the next stage."}
                 </p>
                 
-                <button className="flex items-center gap-2 px-8 py-4 bg-foreground text-background font-bold rounded-xl hover:opacity-90 transition-opacity hover:scale-105 active:scale-95 transform">
+                <button 
+                  onClick={handleExecuteAction}
+                  className="flex items-center gap-2 px-8 py-4 bg-foreground text-background font-bold rounded-xl hover:opacity-90 transition-opacity hover:scale-105 active:scale-95 transform"
+                >
                   Execute Action
                   <ArrowRight size={18} />
                 </button>

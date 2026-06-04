@@ -66,6 +66,18 @@ export const crmApi = {
     return res.json();
   },
 
+  // Tasks
+  getTasks: async () => {
+    const res = await fetch(`${API_BASE}/crm/tasks`, { method: 'GET', headers: getAuthHeaders() });
+    if (!res.ok) throw new Error('Failed to fetch tasks');
+    return res.json();
+  },
+  createTask: async (data) => {
+    const res = await fetch(`${API_BASE}/crm/tasks`, { method: 'POST', headers: getAuthHeaders(), body: JSON.stringify(data) });
+    if (!res.ok) throw new Error('Failed to create task');
+    return res.json();
+  },
+
   // Activities
   generateEmailDraft: async (leadId, transcript, recipientName) => {
     const res = await fetch(`${API_BASE}/crm/leads/${leadId}/generate-email-draft`, {

@@ -43,6 +43,23 @@ export default function EmailGenerator() {
     }
   };
 
+  const handleDiscard = () => {
+    setEmailDraft(null);
+    setTranscript("");
+    showToast("Draft discarded", "success");
+  };
+
+  const handleSend = () => {
+    // Simulate sending email
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setEmailDraft(null);
+      setTranscript("");
+      showToast("Email sent successfully!", "success");
+    }, 1500);
+  };
+
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 flex flex-col lg:flex-row gap-8 items-start">
       {/* Toast Notification */}
@@ -207,10 +224,16 @@ export default function EmailGenerator() {
               </div>
               
               <div className="p-4 sm:p-6 border-t bg-muted/30 flex justify-end gap-3">
-                <button className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground bg-background border rounded-lg transition-colors">
+                <button 
+                  onClick={handleDiscard}
+                  className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground bg-background border rounded-lg transition-colors"
+                >
                   Discard
                 </button>
-                <button className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20">
+                <button 
+                  onClick={handleSend}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/20"
+                >
                   <Send size={16} />
                   Send Email
                 </button>

@@ -156,6 +156,38 @@ exports.updateTicket = async (req, res) => {
   }
 };
 
+// Tasks
+exports.getTasks = async (req, res) => {
+  try {
+    const tasks = await prisma.crmTask.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.createTask = async (req, res) => {
+  try {
+    const { title, owner, dueDate, leadId } = req.body;
+    
+    // Ensure leadId actually exists if provided, otherwise null it out to avoid foreign key errors
+    let validLeadId = null;
+    if (leadId) {
+      const lead = await prisma.lead.findUnique({ where: { id: leadId } });
+      if (lead) validLeadId = leadId;
+    }
+
+    const task = await prisma.crmTask.create({
+      data: { title, owner, dueDate, leadId: validLeadId }
+    });
+    res.status(201).json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Activities
 exports.getActivities = async (req, res) => {
   try {

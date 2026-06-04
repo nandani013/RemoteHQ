@@ -12,6 +12,8 @@ const {
   getTickets,
   createTicket,
   updateTicket,
+  getTasks,
+  createTask,
   getActivities
 } = require('../controllers/crm.controller');
 
@@ -33,5 +35,9 @@ router.put('/tickets/:id', updateTicket);
 
 // Activities
 router.get('/activities', getActivities);
+
+// Tasks
+router.get('/tasks', getTasks);
+router.post('/tasks', createTask);
 
 module.exports = router;

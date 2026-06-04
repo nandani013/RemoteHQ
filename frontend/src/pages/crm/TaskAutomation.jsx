@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createTasks } from "../../lib/api";
+import { createTasks, crmApi } from "../../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, CheckCircle2, AlertCircle, ListTodo, User, Calendar, PlusCircle } from "lucide-react";
 
@@ -31,6 +31,24 @@ export default function TaskAutomation() {
       showToast(err.message || "Failed to generate tasks", "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAddToCrm = async (task, idx) => {
+    try {
+      await crmApi.createTask({
+        title: task.title,
+        owner: task.owner,
+        dueDate: task.dueDate,
+        leadId: leadId
+      });
+      showToast(`Added '${task.title}' to CRM`);
+      
+      // Optionally remove it from the UI so it doesn't get added twice
+      const newTasks = { ...tasks, tasks: tasks.tasks.filter((_, i) => i !== idx) };
+      setTasks(newTasks);
+    } catch (err) {
+      showToast(err.message || "Failed to add task to CRM", "error");
     }
   };
 
@@ -172,7 +190,10 @@ export default function TaskAutomation() {
                     </div>
                   </div>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-lg transition-colors w-full sm:w-auto justify-center">
+                <button 
+                  onClick={() => handleAddToCrm(task, idx)}
+                  className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 text-foreground text-sm font-medium rounded-lg transition-colors w-full sm:w-auto justify-center"
+                >
                   <PlusCircle size={16} />
                   Add to CRM
                 </button>

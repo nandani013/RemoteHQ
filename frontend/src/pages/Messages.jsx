@@ -41,9 +41,10 @@ export function Messages() {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (inputValue.trim()) {
-      sendMessage(inputValue.trim(), user);
+      const sender = user || { name: 'Demo User', id: 'demo' };
+      sendMessage(inputValue.trim(), sender);
       setInputValue('');
-      setTyping(false, user);
+      setTyping(false, sender);
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     }
   };
@@ -51,12 +52,12 @@ export function Messages() {
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
     
-    // Typing indicator logic
-    setTyping(true, user);
+    const sender = user || { name: 'Demo User', id: 'demo' };
+    setTyping(true, sender);
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     
     typingTimeoutRef.current = setTimeout(() => {
-      setTyping(false, user);
+      setTyping(false, sender);
     }, 2000);
   };
 
