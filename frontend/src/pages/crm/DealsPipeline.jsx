@@ -23,9 +23,10 @@ export function DealsPipeline() {
     onMutate: async (updatedLead) => {
       await queryClient.cancelQueries({ queryKey: ['leads'] });
       const previousLeads = queryClient.getQueryData(['leads']);
-      queryClient.setQueryData(['leads'], old => 
-        old.map(lead => lead.id === updatedLead.id ? { ...lead, status: updatedLead.status } : lead)
-      );
+      queryClient.setQueryData(['leads'], old => {
+        if (!Array.isArray(old)) return [];
+        return old.map(lead => lead.id === updatedLead.id ? { ...lead, status: updatedLead.status } : lead);
+      });
       return { previousLeads };
     },
     onError: (err, newLead, context) => {

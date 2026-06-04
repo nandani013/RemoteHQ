@@ -100,7 +100,8 @@ io.on('connection', (socket) => {
       channelMessages[channelId].shift();
     }
 
-    io.to(channelId).emit('receive_message', msg);
+    // Broadcast to all sockets in the channel room (including sender)
+    io.in(channelId).emit('receive_message', msg);
   });
 
   socket.on('typing', ({ channelId, user, isTyping }) => {

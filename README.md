@@ -1,10 +1,8 @@
-# RemoteHQ
-
-## Overview
-RemoteHQ is a modern **CRM + ERP** SaaS platform built on a **React/Vite** frontend and an **Express** backend. It retains the original RemoteHQ features while extending the product with fully integrated sales pipeline, customer management, project/ERP workflows, attendance tracking, and finance dashboards.
+# RemoteHQ is a modern **CRM + ERP** SaaS platform built on a **React/Vite** frontend and an **Express** backend. Recent updates wire up all sales‑automation action buttons (Add to CRM, Execute Recommendation, Send/Discard Email) and finalize the CRM API endpoints, providing a fully functional end‑to‑end workflow.
 
 ## Key Features
 - **CRM Module**: Leads, Customers, Deals Kanban, Support Tickets, Activity Log.
+- **Sales Automation**: Pre‑Call Summary, Conversation Insights, Task Automation (adds tasks to CRM), Recommendations (execute actions), Email Generator (send & discard drafts).
 - **ERP Module**: Employees, Projects, Attendance (clock‑in/out), Finance (budget/revenue), ERP Dashboard.
 - **Automation**: When a lead is marked **WON**, a customer, ERP project, finance record, and related notifications are created automatically.
 - **Role‑Based Access Control**: Admin, Manager, Employee, Client roles with protected API routes and frontend routes.
